@@ -14,14 +14,18 @@ public class PalindroneCheckerApp {
                 isPalindrome = false;
                 break;
             }
+            start++;
+            end--;
         }
 
-        if (isPalindrome) {
-            System.out.println("Palindrome");
-        } else {
-            System.out.println("Not a Palindrome");
+        if(s.equals(text)){
+            if(isPalindrome){
+                System.out.println("Palindrome");
+            }
+            else{
+                System.out.println("Is not a Palindrome");
+            }
+            sc.close();
         }
-
-        sc.close();
     }
-}
+            }
