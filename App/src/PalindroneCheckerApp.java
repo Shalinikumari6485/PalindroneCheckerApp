@@ -4,111 +4,41 @@
 
 import java.util.Scanner;
 
-// Node class for the Singly Linked List
-class Node {
-    char data;
-    Node next;
-
-    Node(char d) {
-        data = d;
-        next = null;
-    }
-}
-
-// Class to manage the Linked List and the Palindrome check logic
 public class PalindroneCheckerApp {
-    Node head;
 
-    // Method to insert a new character at the end of the list
-    public void insert(char data) {
-        Node newNode = new Node(data);
-        if (head == null) {
-            head = newNode;
-            return;
+    // Recursive method to check palindrome
+    public static boolean isPalindrome(String str, int start, int end) {
+
+        // Base Condition 1: If start >= end, all characters matched
+        if (start >= end) {
+            return true;
         }
-        Node last = head;
-        while (last.next != null) {
-            last = last.next;
+
+        // If characters at current positions don't match
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
         }
-        last.next = newNode;
+
+        // Recursive call for remaining substring
+        return isPalindrome(str, start + 1, end - 1);
     }
 
-    // Method to check if the linked list is a palindrome
-    public boolean isPalindrome() {
-        if (head == null || head.next == null) {
-            return true; // Empty or single-node lists are palindromes
-        }
-
-        // 1. Find the middle of the linked list using fast and slow pointers
-        Node slow = head;
-        Node fast = head;
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        // 'slow' now points to the end of the first half
-
-        // 2. Reverse the second half of the list starting from the node after 'slow'
-        Node secondHalfHead = reverseList(slow.next);
-        slow.next = secondHalfHead; // Optional: Link the first and reversed second half (can be useful for restoration)
-
-        // 3. Compare both halves
-        Node firstHalfPtr = head;
-        Node secondHalfPtr = secondHalfHead;
-        boolean isPal = true;
-        while (secondHalfPtr != null) {
-            if (firstHalfPtr.data != secondHalfPtr.data) {
-                isPal = false;
-                break;
-            }
-            firstHalfPtr = firstHalfPtr.next;
-            secondHalfPtr = secondHalfPtr.next;
-        }
-
-        // Optional: Restore the original list structure (reverse the second half back)
-        slow.next = reverseList(secondHalfHead);
-
-        return isPal;
-    }
-
-    // Helper method to reverse a linked list
-    private Node reverseList(Node head) {
-        Node prev = null;
-        Node curr = head;
-        while (curr != null) {
-            Node nextTemp = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = nextTemp;
-        }
-        return prev; // 'prev' is the new head of the reversed list
-    }
-
-    // Method to convert a string to a linked list
-    public void convertStringToLinkedList(String str) {
-        head = null; // Clear any existing list
-        // Normalize the string (ignore spaces, punctuation, and case as per typical palindrome rules)
-        String normalizedStr = str.toLowerCase().replaceAll("[^a-z0-9]", "");
-        for (char c : normalizedStr.toCharArray()) {
-            insert(c);
-        }
-    }
-
-    // Main method for console interaction
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        PalindroneCheckerApp checker = new PalindroneCheckerApp();
 
-        System.out.println("Palindrome Checker App (UC8: Linked List Based)");
-        System.out.print("Enter a string to check: ");
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        checker.convertStringToLinkedList(input);
+        // Optional: Normalize string (remove spaces & ignore case)
+        input = input.replaceAll("\\s+", "").toLowerCase();
 
-        if (checker.isPalindrome()) {
-            System.out.println("The string \"" + input + "\" is a palindrome.");
+        boolean result = isPalindrome(input, 0, input.length() - 1);
+
+        if (result) {
+            System.out.println("The string is a Palindrome.");
         } else {
-            System.out.println("The string \"" + input + "\" is not a palindrome.");
+            System.out.println("The string is NOT a Palindrome.");
         }
 
         scanner.close();
