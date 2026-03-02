@@ -1,76 +1,48 @@
-//version 1.0
-//author Abc
-//useCase 1: Welcome page
-
 import java.util.*;
-
 interface PalindromeStrategy {
     boolean checkPalindrome(String input);
 }
-
-//Stack Strategy
 class StackStrategy implements PalindromeStrategy {
-
     @Override
     public boolean checkPalindrome(String input) {
-
         if (input == null) return false;
-
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
-
         Stack<Character> stack = new Stack<>();
-
-        // Push characters
         for (char ch : normalized.toCharArray()) {
             stack.push(ch);
         }
-
-        // Compare with reverse order
         for (char ch : normalized.toCharArray()) {
             if (ch != stack.pop()) {
                 return false;
             }
         }
-
         return true;
     }
 }
 
-//Deque Strategy
 class DequeStrategy implements PalindromeStrategy {
-
     @Override
     public boolean checkPalindrome(String input) {
-
         if (input == null) return false;
-
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
-
         Deque<Character> deque = new ArrayDeque<>();
-
         for (char ch : normalized.toCharArray()) {
             deque.addLast(ch);
         }
-
         while (deque.size() > 1) {
             if (!deque.removeFirst().equals(deque.removeLast())) {
                 return false;
             }
         }
-
         return true;
     }
 }
 
-// Context Class
 class PalindromeContext {
-
     private PalindromeStrategy strategy;
-
     public void setStrategy(PalindromeStrategy strategy) {
         this.strategy = strategy;
     }
-
     public boolean execute(String input) {
         if (strategy == null) {
             throw new IllegalStateException("Strategy not set!");
@@ -79,21 +51,16 @@ class PalindromeContext {
     }
 }
 
-//Main Application
 public class PalindroneCheckerApp {
-
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         PalindromeContext context = new PalindromeContext();
-
         System.out.println("Choose Palindrome Strategy:");
         System.out.println("1. Stack Strategy");
         System.out.println("2. Deque Strategy");
 
         int choice = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
+        scanner.nextLine();
         if (choice == 1) {
             context.setStrategy(new StackStrategy());
         } else if (choice == 2) {
@@ -102,12 +69,9 @@ public class PalindroneCheckerApp {
             System.out.println("Invalid choice! Defaulting to Stack Strategy.");
             context.setStrategy(new StackStrategy());
         }
-
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
-
         boolean result = context.execute(input);
-
         if (result) {
             System.out.println("The string is a Palindrome.");
         } else {
