@@ -2,50 +2,34 @@
 //author Abc
 //useCase 1: Welcome page
 
-import java.util.Scanner;
+import java.util.Stack;
 
 public class PalindroneCheckerApp {
 
-    // Method to check palindrome using two-pointer technique
-    public static boolean isPalindrome(String str) {
+    // Encapsulated method
+    public boolean checkPalindrome(String input) {
 
-        int start = 0;
-        int end = str.length() - 1;
+        if (input == null) {
+            return false;
+        }
 
-        while (start < end) {
-            if (str.charAt(start) != str.charAt(end)) {
+        // Normalize input (ignore spaces & case)
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+
+        Stack<Character> stack = new Stack<>();
+
+        // Push all characters into stack
+        for (int i = 0; i < normalized.length(); i++) {
+            stack.push(normalized.charAt(i));
+        }
+
+        // Compare original string with stack (reverse order)
+        for (int i = 0; i < normalized.length(); i++) {
+            if (normalized.charAt(i) != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
         }
 
         return true;
-    }
-
-    public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter a string: ");
-        String input = scanner.nextLine();
-
-        // Step 1: Normalize string
-        // Remove spaces using Regular Expression
-        input = input.replaceAll("\\s+", "");
-
-        // Convert to lowercase (case-insensitive comparison)
-        input = input.toLowerCase();
-
-        // Step 2: Apply palindrome logic
-        boolean result = isPalindrome(input);
-
-        if (result) {
-            System.out.println("The string is a Palindrome (ignoring spaces and case).");
-        } else {
-            System.out.println("The string is NOT a Palindrome.");
-        }
-
-        scanner.close();
     }
 }
